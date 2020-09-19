@@ -1,4 +1,4 @@
-# Normal Mapper
+# Normalized Range Mapper
 ![Test](https://github.com/BillyDM/normal_map/workflows/Test/badge.svg)
 [![Documentation](https://docs.rs/normal_map/badge.svg)][documentation]
 [![Crates.io](https://img.shields.io/crates/v/normal_map.svg)](https://crates.io/crates/normal_map)
