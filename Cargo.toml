@@ -1,0 +1,19 @@
+[package]
+name = "normal_map"
+version = "0.1.0"
+authors = ["Billy Messenger <BillyDM@protonmail.com>"]
+license = "MIT"
+edition = "2018"
+keywords = ["dsp", "range", "normal", "normalized"]
+categories = ["encoding"]
+description = "A struct that maps a range of values to the normalized range [0.0, 1.0]"
+repository = "https://github.com/BillyDM/normal_map"
+documentation = "https://docs.rs/normal_map"
+readme = "README.md"
+
+[badges]
+maintenance = { status = "actively-developed" }
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
