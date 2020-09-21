@@ -6,7 +6,7 @@
 
 A Rust helper than maps ranges of values to and from the normalized range [0.0, 1.0] using various gradients, useful for DSP applications.
 
-_Currently in beta._
+_(currently in beta)_
 
 ## Gradient Types
 * `LinearMap` - Linear mapping. This can use either generic or decibel units.
