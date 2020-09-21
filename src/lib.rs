@@ -15,7 +15,7 @@
 //! assert!((lin_map.normalize(25.0) - 0.75).abs() <= 0.0001);
 //! assert!((lin_map.denormalize(0.25) - (-25.0)).abs() <= 0.0001);
 //!
-//! // Efficiently map an array of values
+//! // Efficiently map an array/slice of values
 //! let in_normals = [0.0f32, 1.0, 0.25, -0.25];
 //! let mut out_values = [0.0f32; 4];
 //!
