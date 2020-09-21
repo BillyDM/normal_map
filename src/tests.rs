@@ -2,7 +2,7 @@ use crate::*;
 
 #[test]
 fn linear_map_f32() {
-    let normal_map = NormalMapF32::linear(-50.0, 50.0, Unit::Generic);
+    let normal_map = f32::NormalMap::linear(-50.0, 50.0, f32::Unit::Generic);
 
     assert_approximate_f32(0.0, normal_map.normalize(-50.0));
     assert_approximate_f32(0.0, normal_map.normalize(-52.0));
@@ -23,7 +23,7 @@ fn linear_map_f32() {
 
 #[test]
 fn linear_map_f64() {
-    let normal_map = NormalMapF64::linear(-50.0, 50.0, Unit::Generic);
+    let normal_map = f64::NormalMap::linear(-50.0, 50.0, f64::Unit::Generic);
 
     assert_approximate_f64(0.0, normal_map.normalize(-50.0));
     assert_approximate_f64(0.0, normal_map.normalize(-52.0));
@@ -44,7 +44,7 @@ fn linear_map_f64() {
 
 #[test]
 fn power_map_f32() {
-    let normal_map = NormalMapF32::power(-50.0, 50.0, 0.5, Unit::Generic);
+    let normal_map = f32::NormalMap::power(-50.0, 50.0, 0.5, f32::Unit::Generic);
 
     assert_approximate_f32(0.0, normal_map.normalize(-50.0));
     assert_approximate_f32(0.0, normal_map.normalize(-52.0));
@@ -65,7 +65,7 @@ fn power_map_f32() {
 
 #[test]
 fn power_map_f64() {
-    let normal_map = NormalMapF64::power(-50.0, 50.0, 0.5, Unit::Generic);
+    let normal_map = f64::NormalMap::power(-50.0, 50.0, 0.5, f64::Unit::Generic);
 
     assert_approximate_f64(0.0, normal_map.normalize(-50.0));
     assert_approximate_f64(0.0, normal_map.normalize(-52.0));
@@ -86,7 +86,7 @@ fn power_map_f64() {
 
 #[test]
 fn log_map_f32() {
-    let normal_map = NormalMapF32::log2(20.0, 20480.0);
+    let normal_map = f32::NormalMap::log2(20.0, 20480.0);
 
     assert_approximate_f32(0.0, normal_map.normalize(20.0));
     assert_approximate_f32(0.0, normal_map.normalize(18.0));
@@ -107,7 +107,7 @@ fn log_map_f32() {
 
 #[test]
 fn log_map_f64() {
-    let normal_map = NormalMapF64::log2(20.0, 20480.0);
+    let normal_map = f64::NormalMap::log2(20.0, 20480.0);
 
     assert_approximate_f64(0.0, normal_map.normalize(20.0));
     assert_approximate_f64(0.0, normal_map.normalize(18.0));
@@ -128,7 +128,7 @@ fn log_map_f64() {
 
 #[test]
 fn discrete_map_f32() {
-    let normal_map = NormalMapF32::discrete::<isize>(-5, 5);
+    let normal_map = f32::NormalMap::discrete::<isize>(-5, 5);
 
     assert_approximate_f32(0.0, normal_map.normalize(-5.0));
     assert_approximate_f32(0.0, normal_map.normalize(-6.0));
@@ -149,7 +149,7 @@ fn discrete_map_f32() {
 
 #[test]
 fn discrete_map_f64() {
-    let normal_map = NormalMapF64::discrete::<isize>(-5, 5);
+    let normal_map = f64::NormalMap::discrete::<isize>(-5, 5);
 
     assert_approximate_f64(0.0, normal_map.normalize(-5.0));
     assert_approximate_f64(0.0, normal_map.normalize(-6.0));
