@@ -3,9 +3,15 @@
 //!
 //! (currently in beta)
 //!
+//! ## Installation
+//! Add `normal_map` as a dependency in your `Cargo.toml`:
+//! ```text
+//! normal_map = 0.2
+//! ```
+//!
 //! ## Example
 //! ```
-//! // Import normal mappers that uses internal f32 values.
+//! // Import normal mappers that use internal f32 values.
 //! // (f64 is available as well)
 //! use normal_map::f32::*;
 //!

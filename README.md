@@ -14,10 +14,16 @@ _(currently in beta)_
 * `Log2Map` - Logarithmic mapping using `log2`. This is useful for frequency (Hz) values.
 * `Discrete` - Discrete `isize` integer mapping. A supplied enum may also be used as well as long as it implements `From<isize> + Into<isize> + Copy + Clone`. This mapper has methods for converting to and from either float values or `isize`/`enum` values.
 
+## Installation
+Add `normal_map` as a dependency in your `Cargo.toml`:
+```toml
+normal_map = 0.2
+```
+
 ## Example
 
 ```rust
-// Import normal mappers that uses internal f32 values.
+// Import normal mappers that use internal f32 values.
 // (f64 is available as well)
 use normal_map::f32::*;
 
