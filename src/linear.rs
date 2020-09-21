@@ -28,9 +28,16 @@ impl LinearMapF32 {
         }
     }
 
-    #[inline]
     /// Map an `f32` value to the normalized range `[0.0, 1.0]`.
     pub fn normalize(&self, value: f32) -> f32 {
+        match self.unit {
+            Unit::Decibels => self.normalize_db(value),
+            _ => self.normalize_generic(value),
+        }
+    }
+
+    #[inline(always)]
+    fn normalize_db(&self, value: f32) -> f32 {
         if value <= self.lin_base.min() {
             return 0.0;
         };
@@ -38,10 +45,19 @@ impl LinearMapF32 {
             return 1.0;
         };
 
-        match self.unit {
-            Unit::Decibels => self.lin_base.normalize_db(value),
-            _ => self.lin_base.normalize(value),
-        }
+        self.lin_base.normalize_db(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic(&self, value: f32) -> f32 {
+        if value <= self.lin_base.min() {
+            return 0.0;
+        };
+        if value >= self.lin_base.max() {
+            return 1.0;
+        };
+
+        self.lin_base.normalize(value)
     }
 
     /// Map an array of `f32` values to the normalized range `[0.0, 1.0]`.
@@ -55,32 +71,27 @@ impl LinearMapF32 {
         match self.unit {
             Unit::Decibels => {
                 for i in 0..min_len {
-                    output[i] = if input[i] <= self.lin_base.min() {
-                        0.0
-                    } else if input[i] >= self.lin_base.max() {
-                        1.0
-                    } else {
-                        self.lin_base.normalize_db(input[i])
-                    };
+                    output[i] = self.normalize_db(input[i])
                 }
             }
             _ => {
                 for i in 0..min_len {
-                    output[i] = if input[i] <= self.lin_base.min() {
-                        0.0
-                    } else if input[i] >= self.lin_base.max() {
-                        1.0
-                    } else {
-                        self.lin_base.normalize(input[i])
-                    };
+                    output[i] = self.normalize_generic(input[i])
                 }
             }
         }
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding `f32` value.
     pub fn denormalize(&self, normalized: f32) -> f32 {
+        match self.unit {
+            Unit::Decibels => self.denormalize_db(normalized),
+            _ => self.denormalize_generic(normalized),
+        }
+    }
+
+    #[inline(always)]
+    fn denormalize_db(&self, normalized: f32) -> f32 {
         if normalized == 0.0 {
             return self.lin_base.min();
         }
@@ -88,10 +99,19 @@ impl LinearMapF32 {
             return self.lin_base.max();
         }
 
-        match self.unit {
-            Unit::Decibels => self.lin_base.denormalize_db(normalized).into(),
-            _ => self.lin_base.denormalize(normalized).into(),
+        self.lin_base.denormalize_db(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic(&self, normalized: f32) -> f32 {
+        if normalized == 0.0 {
+            return self.lin_base.min();
         }
+        if normalized == 1.0 {
+            return self.lin_base.max();
+        }
+
+        self.lin_base.denormalize(normalized)
     }
 
     /// Un-map an array of normalized values to the corresponding `f32` value.
@@ -105,30 +125,17 @@ impl LinearMapF32 {
         match self.unit {
             Unit::Decibels => {
                 for i in 0..min_len {
-                    output[i] = if input[i] == 0.0 {
-                        self.lin_base.min()
-                    } else if input[i] == 1.0 {
-                        self.lin_base.max()
-                    } else {
-                        self.lin_base.denormalize_db(input[i])
-                    };
+                    output[i] = self.denormalize_db(input[i])
                 }
             }
             _ => {
                 for i in 0..min_len {
-                    output[i] = if input[i] == 0.0 {
-                        self.lin_base.min()
-                    } else if input[i] == 1.0 {
-                        self.lin_base.max()
-                    } else {
-                        self.lin_base.denormalize(input[i])
-                    };
+                    output[i] = self.denormalize_generic(input[i])
                 }
             }
         }
     }
 }
-
 
 /// Linear mapping.
 ///
@@ -157,9 +164,16 @@ impl LinearMapF64 {
         }
     }
 
-    #[inline]
     /// Map an `f64` value to the normalized range `[0.0, 1.0]`.
     pub fn normalize(&self, value: f64) -> f64 {
+        match self.unit {
+            Unit::Decibels => self.normalize_db(value),
+            _ => self.normalize_generic(value),
+        }
+    }
+
+    #[inline(always)]
+    fn normalize_db(&self, value: f64) -> f64 {
         if value <= self.lin_base.min() {
             return 0.0;
         };
@@ -167,10 +181,19 @@ impl LinearMapF64 {
             return 1.0;
         };
 
-        match self.unit {
-            Unit::Decibels => self.lin_base.normalize_db(value),
-            _ => self.lin_base.normalize(value),
-        }
+        self.lin_base.normalize_db(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic(&self, value: f64) -> f64 {
+        if value <= self.lin_base.min() {
+            return 0.0;
+        };
+        if value >= self.lin_base.max() {
+            return 1.0;
+        };
+
+        self.lin_base.normalize(value)
     }
 
     /// Map an array of `f64` values to the normalized range `[0.0, 1.0]`.
@@ -184,32 +207,27 @@ impl LinearMapF64 {
         match self.unit {
             Unit::Decibels => {
                 for i in 0..min_len {
-                    output[i] = if input[i] <= self.lin_base.min() {
-                        0.0
-                    } else if input[i] >= self.lin_base.max() {
-                        1.0
-                    } else {
-                        self.lin_base.normalize_db(input[i])
-                    };
+                    output[i] = self.normalize_db(input[i])
                 }
             }
             _ => {
                 for i in 0..min_len {
-                    output[i] = if input[i] <= self.lin_base.min() {
-                        0.0
-                    } else if input[i] >= self.lin_base.max() {
-                        1.0
-                    } else {
-                        self.lin_base.normalize(input[i])
-                    };
+                    output[i] = self.normalize_generic(input[i])
                 }
             }
         }
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding `f64` value.
     pub fn denormalize(&self, normalized: f64) -> f64 {
+        match self.unit {
+            Unit::Decibels => self.denormalize_db(normalized),
+            _ => self.denormalize_generic(normalized),
+        }
+    }
+
+    #[inline(always)]
+    fn denormalize_db(&self, normalized: f64) -> f64 {
         if normalized == 0.0 {
             return self.lin_base.min();
         }
@@ -217,10 +235,19 @@ impl LinearMapF64 {
             return self.lin_base.max();
         }
 
-        match self.unit {
-            Unit::Decibels => self.lin_base.denormalize_db(normalized).into(),
-            _ => self.lin_base.denormalize(normalized).into(),
+        self.lin_base.denormalize_db(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic(&self, normalized: f64) -> f64 {
+        if normalized == 0.0 {
+            return self.lin_base.min();
         }
+        if normalized == 1.0 {
+            return self.lin_base.max();
+        }
+
+        self.lin_base.denormalize(normalized)
     }
 
     /// Un-map an array of normalized values to the corresponding `f64` value.
@@ -234,24 +261,12 @@ impl LinearMapF64 {
         match self.unit {
             Unit::Decibels => {
                 for i in 0..min_len {
-                    output[i] = if input[i] == 0.0 {
-                        self.lin_base.min()
-                    } else if input[i] == 1.0 {
-                        self.lin_base.max()
-                    } else {
-                        self.lin_base.denormalize_db(input[i])
-                    };
+                    output[i] = self.denormalize_db(input[i])
                 }
             }
             _ => {
                 for i in 0..min_len {
-                    output[i] = if input[i] == 0.0 {
-                        self.lin_base.min()
-                    } else if input[i] == 1.0 {
-                        self.lin_base.max()
-                    } else {
-                        self.lin_base.denormalize(input[i])
-                    };
+                    output[i] = self.denormalize_generic(input[i])
                 }
             }
         }

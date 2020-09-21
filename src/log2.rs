@@ -21,7 +21,7 @@ impl Log2MapF32 {
     pub fn new(min: f32, max: f32) -> Self {
         assert!(min > 0.0);
         assert!(max > 0.0);
-        
+
         let min_log2 = min.log2();
         let range_log2 = max.log2() - min_log2;
 
@@ -40,9 +40,13 @@ impl Log2MapF32 {
         }
     }
 
-    #[inline]
     /// Map an `f32` value to the normalized range `[0.0, 1.0]`.
     pub fn normalize(&self, value: f32) -> f32 {
+        self.normalize_generic(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic(&self, value: f32) -> f32 {
         if value <= self.min {
             return 0.0;
         };
@@ -62,19 +66,17 @@ impl Log2MapF32 {
         let output = &mut out_normalized[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] <= self.min {
-                0.0
-            } else if input[i] >= self.max {
-                1.0
-            } else {
-                (input[i].log2() - self.min_log2) * self.range_log2_inv
-            };
+            output[i] = self.normalize_generic(input[i]);
         }
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding `f32` value.
     pub fn denormalize(&self, normalized: f32) -> f32 {
+        self.denormalize_generic(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic(&self, normalized: f32) -> f32 {
         if normalized == 0.0 {
             return self.min;
         }
@@ -94,17 +96,10 @@ impl Log2MapF32 {
         let output = &mut out_values[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] == 0.0 {
-                self.min
-            } else if input[i] == 1.0 {
-                self.max
-            } else {
-                2.0f32.powf((input[i] * self.range_log2) + self.min_log2)
-            };
+            output[i] = self.denormalize_generic(input[i]);
         }
     }
 }
-
 
 /// Logarithmic mapping using `log2`
 pub struct Log2MapF64 {
@@ -129,7 +124,7 @@ impl Log2MapF64 {
     pub fn new(min: f64, max: f64) -> Self {
         assert!(min > 0.0);
         assert!(max > 0.0);
-        
+
         let min_log2 = min.log2();
         let range_log2 = max.log2() - min_log2;
 
@@ -148,9 +143,13 @@ impl Log2MapF64 {
         }
     }
 
-    #[inline]
     /// Map an `f64` value to the normalized range `[0.0, 1.0]`.
     pub fn normalize(&self, value: f64) -> f64 {
+        self.normalize_generic(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic(&self, value: f64) -> f64 {
         if value <= self.min {
             return 0.0;
         };
@@ -170,19 +169,17 @@ impl Log2MapF64 {
         let output = &mut out_normalized[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] <= self.min {
-                0.0
-            } else if input[i] >= self.max {
-                1.0
-            } else {
-                (input[i].log2() - self.min_log2) * self.range_log2_inv
-            };
+            output[i] = self.normalize_generic(input[i]);
         }
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding `f64` value.
     pub fn denormalize(&self, normalized: f64) -> f64 {
+        self.denormalize_generic(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic(&self, normalized: f64) -> f64 {
         if normalized == 0.0 {
             return self.min;
         }
@@ -202,13 +199,7 @@ impl Log2MapF64 {
         let output = &mut out_values[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] == 0.0 {
-                self.min
-            } else if input[i] == 1.0 {
-                self.max
-            } else {
-                2.0f64.powf((input[i] * self.range_log2) + self.min_log2)
-            };
+            output[i] = self.denormalize_generic(input[i]);
         }
     }
 }

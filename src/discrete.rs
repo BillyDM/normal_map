@@ -30,12 +30,19 @@ impl DiscreteMapF32 {
         Self { lin_base }
     }
 
-    #[inline]
     /// Map a discrete `isize` value to the normalized range `[0.0, 1.0]`.
     ///
     /// A supplied enum may be used as well as long
     /// as it implements `From<isize> + Into<isize> + Copy + Clone`.
     pub fn normalize<T>(&self, value: T) -> f32
+    where
+        T: Into<isize> + Copy + Clone,
+    {
+        self.normalize_generic(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic<T>(&self, value: T) -> f32
     where
         T: Into<isize> + Copy + Clone,
     {
@@ -52,9 +59,13 @@ impl DiscreteMapF32 {
         self.lin_base.normalize(value)
     }
 
-    #[inline]
     /// Map an `f32` value to the normalized range `[0.0, 1.0]`.
     pub fn normalize_f32(&self, value: f32) -> f32 {
+        self.normalize_generic_f32(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic_f32(&self, value: f32) -> f32 {
         if value <= self.lin_base.min() {
             return 0.0;
         };
@@ -80,16 +91,7 @@ impl DiscreteMapF32 {
         let output = &mut out_normalized[..min_len];
 
         for i in 0..min_len {
-            let value: isize = input[i].into();
-            let value = value as f32;
-
-            output[i] = if value <= self.lin_base.min() {
-                0.0
-            } else if value >= self.lin_base.max() {
-                1.0
-            } else {
-                self.lin_base.normalize(value)
-            };
+            output[i] = self.normalize_generic(input[i]);
         }
     }
 
@@ -102,24 +104,23 @@ impl DiscreteMapF32 {
         let output = &mut out_normalized[..min_len];
 
         for i in 0..min_len {
-            let value = input[i].round();
-
-            output[i] = if value <= self.lin_base.min() {
-                0.0
-            } else if value >= self.lin_base.max() {
-                1.0
-            } else {
-                self.lin_base.normalize(value)
-            };
+            output[i] = self.normalize_generic_f32(input[i]);
         }
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding discrete `isize` value.
     ///
     /// A supplied enum may be used as well as long
     /// as it implements `From<isize> + Into<isize> + Copy + Clone`.
     pub fn denormalize<T>(&self, normalized: f32) -> T
+    where
+        T: From<isize> + Copy + Clone,
+    {
+        self.denormalize_generic(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic<T>(&self, normalized: f32) -> T
     where
         T: From<isize> + Copy + Clone,
     {
@@ -133,14 +134,18 @@ impl DiscreteMapF32 {
         (self.lin_base.denormalize(normalized).round() as isize).into()
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding `f32` value.
     pub fn denormalize_f32(&self, normalized: f32) -> f32 {
+        self.denormalize_generic_f32(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic_f32(&self, normalized: f32) -> f32 {
         if normalized == 0.0 {
-            return self.lin_base.min()
+            return self.lin_base.min();
         }
         if normalized == 1.0 {
-            return self.lin_base.max()
+            return self.lin_base.max();
         }
 
         self.lin_base.denormalize(normalized).round()
@@ -161,13 +166,7 @@ impl DiscreteMapF32 {
         let output = &mut out_values[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] == 0.0 {
-                (self.lin_base.min() as isize).into()
-            } else if input[i] == 1.0 {
-                (self.lin_base.max() as isize).into()
-            } else {
-                (self.lin_base.denormalize(input[i]).round() as isize).into()
-            };
+            output[i] = self.denormalize_generic(input[i]);
         }
     }
 
@@ -180,17 +179,10 @@ impl DiscreteMapF32 {
         let output = &mut out_values[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] == 0.0 {
-                self.lin_base.min()
-            } else if input[i] == 1.0 {
-                self.lin_base.max()
-            } else {
-                self.lin_base.denormalize(input[i]).round()
-            };
+            output[i] = self.denormalize_generic_f32(input[i]);
         }
     }
 }
-
 
 /// Discrete `isize` integer mapping
 ///
@@ -222,12 +214,19 @@ impl DiscreteMapF64 {
         Self { lin_base }
     }
 
-    #[inline]
     /// Map a discrete `isize` value to the normalized range `[0.0, 1.0]`.
     ///
     /// A supplied enum may be used as well as long
     /// as it implements `From<isize> + Into<isize> + Copy + Clone`.
     pub fn normalize<T>(&self, value: T) -> f64
+    where
+        T: Into<isize> + Copy + Clone,
+    {
+        self.normalize_generic(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic<T>(&self, value: T) -> f64
     where
         T: Into<isize> + Copy + Clone,
     {
@@ -244,9 +243,13 @@ impl DiscreteMapF64 {
         self.lin_base.normalize(value)
     }
 
-    #[inline]
     /// Map an `f64` value to the normalized range `[0.0, 1.0]`.
     pub fn normalize_f64(&self, value: f64) -> f64 {
+        self.normalize_generic_f64(value)
+    }
+
+    #[inline(always)]
+    fn normalize_generic_f64(&self, value: f64) -> f64 {
         if value <= self.lin_base.min() {
             return 0.0;
         };
@@ -272,16 +275,7 @@ impl DiscreteMapF64 {
         let output = &mut out_normalized[..min_len];
 
         for i in 0..min_len {
-            let value: isize = input[i].into();
-            let value = value as f64;
-
-            output[i] = if value <= self.lin_base.min() {
-                0.0
-            } else if value >= self.lin_base.max() {
-                1.0
-            } else {
-                self.lin_base.normalize(value)
-            };
+            output[i] = self.normalize_generic(input[i]);
         }
     }
 
@@ -294,24 +288,23 @@ impl DiscreteMapF64 {
         let output = &mut out_normalized[..min_len];
 
         for i in 0..min_len {
-            let value = input[i].round();
-
-            output[i] = if value <= self.lin_base.min() {
-                0.0
-            } else if value >= self.lin_base.max() {
-                1.0
-            } else {
-                self.lin_base.normalize(value)
-            };
+            output[i] = self.normalize_generic_f64(input[i]);
         }
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding discrete `isize` value.
     ///
     /// A supplied enum may be used as well as long
     /// as it implements `From<isize> + Into<isize> + Copy + Clone`.
     pub fn denormalize<T>(&self, normalized: f64) -> T
+    where
+        T: From<isize> + Copy + Clone,
+    {
+        self.denormalize_generic(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic<T>(&self, normalized: f64) -> T
     where
         T: From<isize> + Copy + Clone,
     {
@@ -325,14 +318,18 @@ impl DiscreteMapF64 {
         (self.lin_base.denormalize(normalized).round() as isize).into()
     }
 
-    #[inline]
     /// Un-map a normalized value to the corresponding `f64` value.
     pub fn denormalize_f64(&self, normalized: f64) -> f64 {
+        self.denormalize_generic_f64(normalized)
+    }
+
+    #[inline(always)]
+    fn denormalize_generic_f64(&self, normalized: f64) -> f64 {
         if normalized == 0.0 {
-            return self.lin_base.min()
+            return self.lin_base.min();
         }
         if normalized == 1.0 {
-            return self.lin_base.max()
+            return self.lin_base.max();
         }
 
         self.lin_base.denormalize(normalized).round()
@@ -353,13 +350,7 @@ impl DiscreteMapF64 {
         let output = &mut out_values[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] == 0.0 {
-                (self.lin_base.min() as isize).into()
-            } else if input[i] == 1.0 {
-                (self.lin_base.max() as isize).into()
-            } else {
-                (self.lin_base.denormalize(input[i]).round() as isize).into()
-            };
+            output[i] = self.denormalize_generic(input[i]);
         }
     }
 
@@ -372,13 +363,7 @@ impl DiscreteMapF64 {
         let output = &mut out_values[..min_len];
 
         for i in 0..min_len {
-            output[i] = if input[i] == 0.0 {
-                self.lin_base.min()
-            } else if input[i] == 1.0 {
-                self.lin_base.max()
-            } else {
-                self.lin_base.denormalize(input[i]).round()
-            };
+            output[i] = self.denormalize_generic_f64(input[i]);
         }
     }
 }
