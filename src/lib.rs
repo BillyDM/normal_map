@@ -5,7 +5,7 @@
 //!
 //! ## Example
 //! ```
-//! // Import normal map that uses internal f32 values.
+//! // Import normal mappers that uses internal f32 values.
 //! // (f64 is available as well)
 //! use normal_map::f32::*;
 //!
