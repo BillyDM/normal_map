@@ -15,6 +15,12 @@
 //! assert!((lin_map.normalize(25.0) - 0.75).abs() <= 0.0001);
 //! assert!((lin_map.denormalize(0.25) - (-25.0)).abs() <= 0.0001);
 //!
+//! // Efficiently map an array of values
+//! let in_normals = [0.0f32, 1.0, 0.25, -0.25];
+//! let mut out_values = [0.0f32; 4];
+//!
+//! lin_map.denormalize_array(&in_normals, &mut out_values);
+//!
 //! // Generic type for any mapper.
 //! let normal_map = NormalMap::discrete::<isize>(-5, 5);
 //!
