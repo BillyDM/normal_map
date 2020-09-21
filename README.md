@@ -6,6 +6,6 @@
 
 A Rust helper than maps ranges of values to the normalized range [0.0, 1.0] using various gradients, useful for DSP applications.
 
-(prerelease)
+(alpha)
 
 [documentation]: https://docs.rs/normal_map/
