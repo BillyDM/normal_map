@@ -25,7 +25,7 @@ pub enum Mapper {
     /// Please note if you use `Unit::Decibels`, then the decibels
     /// will be linearly mapped, not the raw amplitude.
     Pow(PowerMap),
-    /// Logarithmic mapping using `log2`
+    /// Logarithmic mapping using `log2`. This is useful for frequency (Hz) values.
     Log2(Log2Map),
     /// Discrete `isize` integer mapping
     ///
@@ -97,6 +97,7 @@ impl NormalMap {
     }
 
     /// Create a new `NormalMap` with a logarithmic mapping using `log2`.
+    /// This is useful for frequency (Hz) values.
     ///
     /// # Arguments
     ///

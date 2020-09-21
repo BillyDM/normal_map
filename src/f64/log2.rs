@@ -1,6 +1,6 @@
 use std::fmt::Debug;
 
-/// Logarithmic mapping using `log2`
+/// Logarithmic mapping using `log2`. This is useful for frequency (Hz) values.
 #[derive(Debug)]
 pub struct Log2Map {
     min: f64,
@@ -12,6 +12,7 @@ pub struct Log2Map {
 
 impl Log2Map {
     /// Create a new `Log2Map` for logarithmic mapping using `log2`.
+    /// This is useful for frequency (Hz) values.
     ///
     /// # Arguments
     ///
