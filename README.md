@@ -12,7 +12,7 @@ _(currently in beta)_
 * `LinearMap` - Linear mapping. This can use either generic or decibel units.
 * `PowerMap` - Exponential mapping where the normalized value is raised to the supplied exponent. This can use either generic or decibel units.
 * `Log2Map` - Logarithmic mapping using `log2`. This is useful for frequency (Hz) values.
-* `Discrete` - Discrete `isize` integer mapping. A supplied enum may also be used as well as long as it implements `From<isize> + Into<isize> + Copy + Clone`. This mapper has methods for converting to and from either float values or `isize`/`enum` values.
+* `DiscreteMap` - Discrete `isize` integer mapping. A supplied enum may also be used as well as long as it implements `From<isize> + Into<isize> + Copy + Clone`. This mapper has methods for converting to and from either float values or `isize`/`enum` values.
 
 ## Installation
 Add `normal_map` as a dependency in your `Cargo.toml`:

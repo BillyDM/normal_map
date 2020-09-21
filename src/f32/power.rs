@@ -7,7 +7,7 @@ use std::fmt::Debug;
 /// supplied exponent.
 ///
 /// Please note if you use `Unit::Decibels`, then the decibels
-/// will be linearly mapped, not the raw amplitude.
+/// are what will be mapped, not the raw amplitude.
 #[derive(Debug)]
 pub struct PowerMap {
     lin_base: linear_base::Base,
